@@ -1,9 +1,10 @@
 import React from 'react';
+import { Button } from 'antd';
 
 const Product2 = props => {
   return (
     <div>
-      Product2
+      <Button>coucou</Button>
     </div>
   );
 };

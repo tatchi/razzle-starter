@@ -1,4 +1,4 @@
 {
   "presets": ["razzle/babel"],
-  "plugins": ["react-loadable/babel"]
+  "plugins": [["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }], "react-loadable/babel"]
 }
