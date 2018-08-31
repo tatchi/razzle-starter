@@ -17,7 +17,10 @@ server
     const context = {};
     const modules = [];
     const markup = renderToString(
-      <Capture report={moduleName => modules.push(moduleName)}>
+      <Capture report={moduleName => {
+        console.log(moduleName)
+        modules.push(moduleName)
+      }}>
         <StaticRouter context={context} location={req.url}>
           <App />
         </StaticRouter>
@@ -28,8 +31,10 @@ server
       res.redirect(context.url);
     } else {
       const bundles = getBundles(stats, modules);
+      // console.log(modules);
       const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
       const styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
+      // console.log(styles);
       res.status(200).send(
         `<!doctype html>
 <html lang="">
@@ -47,11 +52,6 @@ server
   </head>
   <body>
     <div id="root">${markup}</div>
-    ${
-      process.env.NODE_ENV === 'production'
-        ? `<script src="${assets.client.js}"></script>`
-        : `<script src="${assets.client.js}" crossorigin></script>`
-    }
     ${chunks
       .map(
         chunk =>
@@ -60,6 +60,11 @@ server
             : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${chunk.file}"></script>`,
       )
       .join('\n')}
+          ${
+            process.env.NODE_ENV === 'production'
+              ? `<script src="${assets.client.js}"></script>`
+              : `<script src="${assets.client.js}" crossorigin></script>`
+          }
           <script>window.main();</script>
   </body>
 </html>`,

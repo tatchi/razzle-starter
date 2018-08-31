@@ -15,6 +15,7 @@ const Product2 = Loadable({
   loading: () => null,
 });
 
+
 class Home extends Component {
   render() {
     return (
