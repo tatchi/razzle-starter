@@ -6,6 +6,9 @@ import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
 import stats from '../build/react-loadable.json';
+import webpackStats from '../build/stats.json';
+import { clearChunks, flushChunkNames } from 'react-universal-component/server';
+import flushChunks from 'webpack-flush-chunks';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -16,19 +19,26 @@ server
   .get('/*', (req, res) => {
     const context = {};
     const modules = [];
+
+    clearChunks();
+
     const markup = renderToString(
       <StaticRouter context={context} location={req.url}>
         <App />
       </StaticRouter>,
     );
 
+    const { js, styles, cssHash } = flushChunks(webpackStats, {
+      chunkNames: flushChunkNames(),
+    });
+
     if (context.url) {
       res.redirect(context.url);
     } else {
-      const bundles = getBundles(stats, modules);
-      // console.log(modules);
-      const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
-      const styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
+      // const bundles = getBundles(stats, modules);
+      // // console.log(modules);
+      // const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
+      // const styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
       // console.log(styles);
       res.status(200).send(
         `<!doctype html>
@@ -39,6 +49,7 @@ server
     <title>Welcome to Razzle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+    ${styles}
   </head>
   <body>
     <div id="root">${markup}</div>
@@ -47,7 +58,8 @@ server
               ? `<script src="${assets.client.js}"></script>`
               : `<script src="${assets.client.js}" crossorigin></script>`
           }
-          <script>window.main();</script>
+          ${cssHash}
+          ${js}
   </body>
 </html>`,
       );

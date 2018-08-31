@@ -1,6 +1,6 @@
 {
   "presets": ["razzle/babel"],
   "plugins": [
-    ["import", { "libraryName": "antd", "libraryDirectory": "lib", "style": false}],
+    ["import", { "libraryName": "antd", "libraryDirectory": "lib", "style": "css"}],
     "universal-import"]
 }
