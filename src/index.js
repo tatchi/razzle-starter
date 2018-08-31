@@ -6,9 +6,7 @@ const server = http.createServer(app);
 
 let currentApp = app;
 
-Loadable.preloadAll().then(() => {
-  server.listen(process.env.PORT || 3000);
-});
+server.listen(process.env.PORT || 3000);
 
 if (module.hot) {
   console.log('✅  Server-side HMR Enabled!');

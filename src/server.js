@@ -17,14 +17,9 @@ server
     const context = {};
     const modules = [];
     const markup = renderToString(
-      <Capture report={moduleName => {
-        console.log(moduleName)
-        modules.push(moduleName)
-      }}>
-        <StaticRouter context={context} location={req.url}>
-          <App />
-        </StaticRouter>
-      </Capture>,
+      <StaticRouter context={context} location={req.url}>
+        <App />
+      </StaticRouter>,
     );
 
     if (context.url) {
@@ -44,22 +39,9 @@ server
     <title>Welcome to Razzle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
-    ${styles
-      .map(style => {
-        return `<link href="${style.file}" rel="stylesheet"/>`;
-      })
-      .join('\n')}
   </head>
   <body>
     <div id="root">${markup}</div>
-    ${chunks
-      .map(
-        chunk =>
-          process.env.NODE_ENV === 'production'
-            ? `<script src="/${chunk.file}"></script>`
-            : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${chunk.file}"></script>`,
-      )
-      .join('\n')}
           ${
             process.env.NODE_ENV === 'production'
               ? `<script src="${assets.client.js}"></script>`
