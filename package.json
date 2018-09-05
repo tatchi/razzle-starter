@@ -9,21 +9,21 @@
     "start:prod": "cross-env NODE_ENV=production node build/server.js"
   },
   "dependencies": {
-    "antd": "^3.8.4",
-    "babel-plugin-universal-import": "^3.0.1",
+    "antd": "^3.9.1",
+    "babel-plugin-universal-import": "^3.0.2",
     "express": "^4.16.2",
     "razzle": "^2.4.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-loadable": "^5.3.1",
     "react-router-dom": "^4.2.2",
-    "react-universal-component": "^3.0.0",
+    "react-universal-component": "^3.0.1",
     "webpack-flush-chunks": "^2.0.1"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.8.0",
     "cross-env": "^5.2.0",
-    "extract-css-chunks-webpack-plugin": "^3.0.11",
+    "extract-css-chunks-webpack-plugin": "^3.1.1",
     "webpack-stats-plugin": "^0.2.1"
   }
 }
