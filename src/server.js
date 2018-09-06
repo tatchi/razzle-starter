@@ -5,7 +5,6 @@ import { getBundles } from 'react-loadable/webpack';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
-import stats from '../build/react-loadable.json';
 import webpackStats from '../build/stats.json';
 import { clearChunks, flushChunkNames } from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
@@ -18,7 +17,6 @@ server
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
     const context = {};
-    const modules = [];
 
     clearChunks();
 

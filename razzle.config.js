@@ -1,28 +1,57 @@
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+const { StatsWriterPlugin } = require('webpack-stats-plugin');
 
 module.exports = {
-  modify: (config, { target }) => {
+  modify: (defaultConfig, { target, dev }, webpack, userOptions = {}) => {
+    const isServer = target !== 'web';
+    const constantEnv = dev ? 'dev' : 'prod';
+    let config = Object.assign({}, defaultConfig);
+
+    let rules = config.module.rules;
+
+    const loaderName = 'mini-css-extract-plugin';
+    const loaderRegex = new RegExp(`[/\\\\]${loaderName}[/\\\\]`);
+
+    console.log({ isServer });
+    console.log({ constantEnv });
+    // allLoaders = rules.filter(rule => rule.use).reduce((acc, rule) => [...acc, ...rule.use], []);
+    // miniCssLoaders = allLoaders.filter(loader => loaderRegex.test(loader));
+
+    // miniCssLoaders.forEach(element => {
+    //   element = 'll';
+    // });
+
+    rules.forEach((rule, iRule) => {
+      if (rule.use) {
+        rule.use.forEach((loader, iLoader) => {
+          if (loader && typeof loader === 'string' && loaderRegex.test(loader)) {
+            rules[iRule].use[iLoader] = ExtractCssChunks.loader;
+          }
+        });
+      }
+    });
+
+    // console.log(config.module.rules.filter(rule => rule.use).reduce((acc, rule) => [...acc, ...rule.use], []));
+
+    config.plugins.forEach((p, i) => {
+      if (p instanceof MiniCssExtractPlugin) {
+        config.plugins[i] = new ExtractCssChunks({ ...p.options });
+      }
+    });
+
     if (target === 'web') {
-      return {
-        ...config,
-        plugins: [
-          ...config.plugins,
-          new ReactLoadablePlugin({
-            filename: './build/react-loadable.json',
-          }),
-        ],
-      };
+      config.plugins = [
+        ...config.plugins,
+        new StatsWriterPlugin({
+          fields: null,
+          filename: '../stats.json', // Default
+        }),
+      ];
     }
 
-    const cfg = config.module.rules[2].use[0];
-
-    // cfg.options.plugins = [
-    //   ...(cfg.options.plugins || []),
-    //   // ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }],
-    //   ['import', { libraryName: 'antd', libraryDirectory: 'lib', style: name => `${name}/style/index.css` }],
-    // ];
-
-    console.log(cfg.options.plugins);
+    console.log(config.plugins);
 
     return config;
   },
