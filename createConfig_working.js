@@ -17,8 +17,7 @@ const nodePath = require('./env').nodePath;
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const WebpackBar = require('webpackbar');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-const { StatsWriterPlugin } = require("webpack-stats-plugin")
-
+const { StatsWriterPlugin } = require('webpack-stats-plugin');
 
 const postCssOptions = {
   ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
@@ -447,8 +446,8 @@ module.exports = (
         new webpack.DefinePlugin(dotenv.stringified),
         new StatsWriterPlugin({
           fields: null,
-          filename: "../stats.json" // Default
-        })
+          filename: '../stats.json', // Default
+        }),
       ];
 
       config.optimization = {
@@ -498,11 +497,11 @@ module.exports = (
           allChunks: true,
         }),
         new webpack.HashedModuleIdsPlugin(),
-        new webpack.optimize.AggressiveMergingPlugin(),
+        // new webpack.optimize.AggressiveMergingPlugin(),
         new StatsWriterPlugin({
           fields: null,
-          filename: "../stats.json" // Default
-        })
+          filename: '../stats.json', // Default
+        }),
       ];
 
       config.optimization = {
@@ -547,6 +546,19 @@ module.exports = (
             sourceMap: true,
           }),
         ],
+        // CLT: Not sur if usefull
+        runtimeChunk: {
+          name: 'bootstrap'
+        },
+        splitChunks: {
+          cacheGroups: {
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              chunks: 'initial',
+              name: 'vendor',
+            },
+          },
+        },
         // @todo automatic vendor bundle
         // Automatically split vendor and commons
         // https://twitter.com/wSokra/status/969633336732905474
@@ -611,4 +623,3 @@ module.exports = (
 
   return config;
 };
-s
