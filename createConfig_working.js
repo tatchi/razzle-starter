@@ -9,15 +9,13 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const autoprefixer = require('autoprefixer');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const paths = require('./paths');
 const runPlugin = require('./runPlugin');
 const getClientEnv = require('./env').getClientEnv;
 const nodePath = require('./env').nodePath;
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const WebpackBar = require('webpackbar');
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-const { StatsWriterPlugin } = require('webpack-stats-plugin');
 
 const postCssOptions = {
   ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
@@ -39,8 +37,15 @@ const postCssOptions = {
 module.exports = (
   target = 'web',
   env = 'dev',
-  { clearConsole = true, host = 'localhost', port = 3000, modify, plugins, modifyBabelOptions },
-  webpackObject,
+  {
+    clearConsole = true,
+    host = 'localhost',
+    port = 3000,
+    modify,
+    plugins,
+    modifyBabelOptions,
+  },
+  webpackObject
 ) => {
   // First we check to see if the user has a custom .babelrc file, otherwise
   // we just use babel-preset-razzle.
@@ -65,7 +70,9 @@ module.exports = (
   }
 
   // Allow app to override babel options
-  const babelOptions = modifyBabelOptions ? modifyBabelOptions(mainBabelOptions) : mainBabelOptions;
+  const babelOptions = modifyBabelOptions
+    ? modifyBabelOptions(mainBabelOptions)
+    : mainBabelOptions;
 
   if (hasBabelRc && babelOptions.babelrc) {
     console.log('Using .babelrc defined in your app root');
@@ -105,7 +112,7 @@ module.exports = (
     resolve: {
       modules: ['node_modules', paths.appNodeModules].concat(
         // It is guaranteed to exist because we tweak it in `env.js`
-        nodePath.split(path.delimiter).filter(Boolean),
+        nodePath.split(path.delimiter).filter(Boolean)
       ),
       extensions: ['.mjs', '.jsx', '.js', '.json'],
       alias: {
@@ -139,7 +146,7 @@ module.exports = (
         {
           test: /\.mjs$/,
           include: /node_modules/,
-          type: 'javascript/auto',
+          type: "javascript/auto",
         },
         // Transform ES6 with Babel
         {
@@ -222,7 +229,7 @@ module.exports = (
                   },
                 ]
               : [
-                  ExtractCssChunks.loader,
+                  MiniCssExtractPlugin.loader,
                   {
                     loader: require.resolve('css-loader'),
                     options: {
@@ -272,7 +279,7 @@ module.exports = (
                   },
                 ]
               : [
-                  ExtractCssChunks.loader,
+                  MiniCssExtractPlugin.loader,
                   {
                     loader: require.resolve('css-loader'),
                     options: {
@@ -402,7 +409,8 @@ module.exports = (
         libraryTarget: 'var',
         filename: 'static/js/bundle.js',
         chunkFilename: 'static/js/[name].chunk.js',
-        devtoolModuleFilenameTemplate: info => path.resolve(info.resourcePath).replace(/\\/g, '/'),
+        devtoolModuleFilenameTemplate: info =>
+          path.resolve(info.resourcePath).replace(/\\/g, '/'),
       };
       // Configure webpack-dev-server to serve our client-side bundle from
       // http://${dotenv.raw.HOST}:3001
@@ -444,10 +452,6 @@ module.exports = (
           multiStep: true,
         }),
         new webpack.DefinePlugin(dotenv.stringified),
-        new StatsWriterPlugin({
-          fields: null,
-          filename: '../stats.json', // Default
-        }),
       ];
 
       config.optimization = {
@@ -489,7 +493,7 @@ module.exports = (
         // Define production environment vars
         new webpack.DefinePlugin(dotenv.stringified),
         // Extract our CSS into a files.
-        new ExtractCssChunks({
+        new MiniCssExtractPlugin({
           filename: 'static/css/bundle.[contenthash:8].css',
           // allChunks: true because we want all css to be included in the main
           // css bundle when doing code splitting to avoid FOUC:
@@ -497,11 +501,7 @@ module.exports = (
           allChunks: true,
         }),
         new webpack.HashedModuleIdsPlugin(),
-        // new webpack.optimize.AggressiveMergingPlugin(),
-        new StatsWriterPlugin({
-          fields: null,
-          filename: '../stats.json', // Default
-        }),
+        new webpack.optimize.AggressiveMergingPlugin(),
       ];
 
       config.optimization = {
@@ -546,19 +546,6 @@ module.exports = (
             sourceMap: true,
           }),
         ],
-        // CLT: Not sur if usefull
-        runtimeChunk: {
-          name: 'bootstrap'
-        },
-        splitChunks: {
-          cacheGroups: {
-            vendors: {
-              test: /[\\/]node_modules[\\/]/,
-              chunks: 'initial',
-              name: 'vendor',
-            },
-          },
-        },
         // @todo automatic vendor bundle
         // Automatically split vendor and commons
         // https://twitter.com/wSokra/status/969633336732905474
@@ -611,7 +598,12 @@ module.exports = (
   // Apply razzle plugins, if they are present in razzle.config.js
   if (Array.isArray(plugins)) {
     plugins.forEach(plugin => {
-      config = runPlugin(plugin, config, { target, dev: IS_DEV }, webpackObject);
+      config = runPlugin(
+        plugin,
+        config,
+        { target, dev: IS_DEV },
+        webpackObject
+      );
     });
   }
 
