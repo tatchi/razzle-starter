@@ -2,7 +2,6 @@ const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const { StatsWriterPlugin } = require('webpack-stats-plugin');
-const StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = {
   modify: (defaultConfig, { target, dev }, webpack, userOptions = {}) => {
@@ -10,16 +9,16 @@ module.exports = {
     const constantEnv = dev ? 'dev' : 'prod';
     let config = Object.assign({}, defaultConfig);
 
-    if (target === 'web') {
+    // if (target === 'web') {
       config.plugins = [
         ...config.plugins,
-        new StatsPlugin('../stats.json', 'normal'),
-        // new StatsWriterPlugin({
-        //   fields: null,
-        //   filename: './build/stats.json', // Default
-        // }),
+        // new StatsPlugin('../stats.json', 'normal'),
+        new StatsWriterPlugin({
+          fields: null,
+          filename: './build/stats.json', // Default
+        }),
       ];
-    }
+    // }
 
     return config;
 
