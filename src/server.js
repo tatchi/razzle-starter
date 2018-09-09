@@ -30,6 +30,9 @@ server
       chunkNames: flushChunkNames(),
     });
 
+    console.log(js.toString())
+    console.log(assets.client)
+
     if (context.url) {
       res.redirect(context.url);
     } else {
@@ -51,13 +54,13 @@ server
   </head>
   <body>
     <div id="root">${markup}</div>
+          ${cssHash}
+          ${js}
           ${
             process.env.NODE_ENV === 'production'
               ? `<script src="${assets.client.js}"></script>`
               : `<script src="${assets.client.js}" crossorigin></script>`
           }
-          ${cssHash}
-          ${js}
   </body>
 </html>`,
       );

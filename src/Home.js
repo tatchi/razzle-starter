@@ -17,6 +17,8 @@ import Welcome from './Welcome'
 // });
 const Product = universal(() => import('./Product'))
 const Product2 = universal(() => import('./Product2'))
+const Product3 = universal(() => import('./Product3'))
+const Product4 = universal(() => import('./Product4'))
 
 
 
@@ -38,6 +40,12 @@ class Home extends Component {
             <Link to="/Product2">Product2</Link>
           </li>
           <li>
+            <Link to="/Product3">Product3</Link>
+          </li>
+          <li>
+            <Link to="/product4">Product4</Link>
+          </li>
+          <li>
             <a href="https://github.com/jaredpalmer/razzle">Docs</a>
           </li>
           <li>
@@ -49,6 +57,8 @@ class Home extends Component {
         </ul>
         <Route exact path="/product" component={Product} />
         <Route exact path="/product2" component={Product2} />
+        <Route exact path="/product3" component={Product3} />
+        <Route exact path="/product4" component={Product4} />
       </div>
     );
   }
