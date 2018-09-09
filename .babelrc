@@ -2,5 +2,5 @@
   "presets": ["razzle/babel"],
   "plugins": [
     ["import", { "libraryName": "antd", "libraryDirectory": "lib", "style": false}],
-    "universal-import"]
+    "react-loadable/babel", "universal-import"]
 }
