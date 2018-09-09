@@ -2,6 +2,8 @@ const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const { StatsWriterPlugin } = require('webpack-stats-plugin');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = {
   modify: (defaultConfig, { target, dev }, webpack, userOptions = {}) => {
@@ -9,7 +11,7 @@ module.exports = {
     const constantEnv = dev ? 'dev' : 'prod';
     let config = Object.assign({}, defaultConfig);
 
-    // if (target === 'web') {
+    if (target === 'web') {
       config.plugins = [
         ...config.plugins,
         // new StatsPlugin('../stats.json', 'normal'),
@@ -17,8 +19,25 @@ module.exports = {
           fields: null,
           filename: './build/stats.json', // Default
         }),
+        {
+          apply: compiler => {
+            compiler.plugin('emit', (curCompiler, callback) => {
+              const json = JSON.stringify(curCompiler.getStats().toJson(), null, 2);
+              const outputDirectory = path.dirname('./build/stats.json');
+              try {
+                fs.mkdirSync(outputDirectory);
+              } catch (err) {
+                if (err.code !== 'EEXIST') {
+                  throw err;
+                }
+              }
+              fs.writeFileSync('./build/stats.json', json);
+              callback();
+            });
+          },
+        },
       ];
-    // }
+    }
 
     return config;
 
@@ -27,8 +46,6 @@ module.exports = {
     const loaderName = 'mini-css-extract-plugin';
     const loaderRegex = new RegExp(`[/\\\\]${loaderName}[/\\\\]`);
 
-    console.log({ isServer });
-    console.log({ constantEnv });
     // allLoaders = rules.filter(rule => rule.use).reduce((acc, rule) => [...acc, ...rule.use], []);
     // miniCssLoaders = allLoaders.filter(loader => loaderRegex.test(loader));
 

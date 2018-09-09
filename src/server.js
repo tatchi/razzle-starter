@@ -5,13 +5,11 @@ import { getBundles } from 'react-loadable/webpack';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
-// import webpackStats from '../build/stats.json';
+import webpackStats from '../build/stats.json';
 import { clearChunks, flushChunkNames } from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
-
-console.log('server')
 
 const server = express();
 server
@@ -28,9 +26,9 @@ server
       </StaticRouter>,
     );
 
-    // const { js, styles, cssHash } = flushChunks(webpackStats, {
-    //   chunkNames: flushChunkNames(),
-    // });
+    const { js, styles, cssHash, Js, scripts } = flushChunks(webpackStats, {
+      chunkNames: flushChunkNames(),
+    });
 
     if (context.url) {
       res.redirect(context.url);
@@ -49,6 +47,7 @@ server
     <title>Welcome to Razzle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+    ${styles}
   </head>
   <body>
     <div id="root">${markup}</div>
@@ -57,6 +56,8 @@ server
               ? `<script src="${assets.client.js}"></script>`
               : `<script src="${assets.client.js}" crossorigin></script>`
           }
+          ${cssHash}
+          ${js}
   </body>
 </html>`,
       );
