@@ -7,18 +7,26 @@ import Logo from './Logo'
 import Intro from './Intro'
 import Welcome from './Welcome'
 
-// const Product = Loadable({
-//   loader: () => import('./Product'),
-//   loading: () => null,
-// });
-// const Product2 = Loadable({
-//   loader: () => import('./Product2'),
-//   loading: () => null,
-// });
-const Product = universal(() => import('./Product'))
-const Product2 = universal(() => import('./Product2'))
-const Product3 = universal(() => import('./Product3'))
-const Product4 = universal(() => import('./Product4'))
+const Product = Loadable({
+  loader: () => import('./Product'),
+  loading: () => null,
+});
+const Product2 = Loadable({
+  loader: () => import('./Product2'),
+  loading: () => null,
+});
+const Product3 = Loadable({
+  loader: () => import('./Product3'),
+  loading: () => null,
+});
+const Product4 = Loadable({
+  loader: () => import('./Product4'),
+  loading: () => null,
+});
+// const Product = universal(() => import('./Product'))
+// const Product2 = universal(() => import('./Product2'))
+// const Product3 = universal(() => import('./Product3'))
+// const Product4 = universal(() => import('./Product4'))
 
 
 
