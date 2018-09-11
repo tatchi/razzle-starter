@@ -1,6 +1,6 @@
 {
   "presets": ["razzle/babel"],
   "plugins": [
-    ["import", { "libraryName": "antd", "libraryDirectory": "lib", "style": false}],
-    "react-loadable/babel", "universal-import"]
+    ["import", { "libraryName": "antd", "libraryDirectory": "lib", "style": "css"}],
+    "@7rulnik/react-loadable/babel", "universal-import"]
 }

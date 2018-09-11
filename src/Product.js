@@ -1,8 +1,8 @@
 import React from 'react';
 import './Product.css';
 import MyCommonComp from './MyCommonComp';
-import 'antd/lib/button/style/index.css';
-import 'antd/lib/switch/style/index.css';
+// import 'antd/lib/button/style/index.css';
+// import 'antd/lib/switch/style/index.css';
 import { Switch, Button } from 'antd';
 
 const Product = props => {

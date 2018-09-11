@@ -1,4 +1,4 @@
-const { ReactLoadablePlugin } = require('react-loadable/webpack');
+const { ReactLoadablePlugin } = require('@7rulnik/react-loadable/webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const { StatsWriterPlugin } = require('webpack-stats-plugin');
@@ -18,6 +18,9 @@ module.exports = {
         new StatsWriterPlugin({
           fields: null,
           filename: './build/stats.json', // Default
+        }),
+        new ReactLoadablePlugin({
+          filename: './build/react-loadable.json',
         }),
         {
           apply: compiler => {

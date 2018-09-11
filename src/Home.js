@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Loadable from 'react-loadable';
+import Loadable from '@7rulnik/react-loadable';
 import universal from 'react-universal-component'
 import { Link, Route } from 'react-router-dom'
 import './Home.css';
