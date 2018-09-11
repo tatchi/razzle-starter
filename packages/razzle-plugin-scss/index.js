@@ -5,8 +5,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PostCssFlexBugFixes = require('postcss-flexbugs-fixes');
 const paths = require('razzle/config/paths');
 
-console.log('okayy');
-
 const defaultOptions = {
   postcss: {
     dev: {
@@ -136,8 +134,6 @@ module.exports = (defaultConfig, { target, dev }, webpack, userOptions = {}) => 
         : [dev ? styleLoader : MiniCssExtractPlugin.loader, cssLoader, resolveUrlLoader, postCssLoader, lessLoader],
     },
   ];
-
-  console.log(config)
 
   return config;
 };
