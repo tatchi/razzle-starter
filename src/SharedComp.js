@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const SharedComp = props => {
   return (
@@ -9,8 +8,5 @@ const SharedComp = props => {
   );
 };
 
-SharedComp.propTypes = {
-
-};
 
 export default SharedComp;

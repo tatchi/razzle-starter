@@ -1,5 +1,4 @@
 import http from 'http';
-import Loadable from 'react-loadable';
 import app from './server';
 
 const server = http.createServer(app);
