@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Loadable from '@7rulnik/react-loadable';
-import universal from 'react-universal-component'
 import { Link, Route } from 'react-router-dom'
 import './Home.css';
 import Logo from './Logo'
@@ -23,14 +22,6 @@ const Product4 = Loadable({
   loader: () => import('./Product4'),
   loading: () => null,
 });
-// const Product = universal(() => import('./Product'))
-// const Product2 = universal(() => import('./Product2'))
-// const Product3 = universal(() => import('./Product3'))
-// const Product4 = universal(() => import('./Product4'))
-
-
-
-
 class Home extends Component {
   render() {
     return (

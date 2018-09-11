@@ -17,8 +17,6 @@ server
     const context = {};
     let modules = [];
 
-    // clearChunks();
-
     const markup = renderToString(
       <Capture report={moduleName => modules.push(moduleName)}>
         <StaticRouter context={context} location={req.url}>
@@ -26,11 +24,6 @@ server
         </StaticRouter>
       </Capture>,
     );
-
-    // const { js, styles, cssHash, Js, scripts } = flushChunks(webpackStats, {
-    //   chunkNames: flushChunkNames(),
-    // });
-
     const clientJs = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.js'));
     const clientCss = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.css'));
 
@@ -53,20 +46,9 @@ server
       [],
     );
 
-    console.log({ moduleNames });
-    console.log({ jsChunks });
-    console.log({ cssChunks });
-    console.log({ clientJs });
-    console.log({ clientCss });
-
     if (context.url) {
       res.redirect(context.url);
     } else {
-      // const bundles = getBundles(stats, modules);
-      // // console.log(modules);
-      // const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
-      // const styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
-      // console.log(styles);
       res.status(200).send(
         `<!doctype html>
 <html lang="">
