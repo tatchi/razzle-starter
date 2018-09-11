@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = {
+  plugins: [{ func: require('razzle-plugin-scss') }],
   modify: (defaultConfig, { target, dev }, webpack, userOptions = {}) => {
     const isServer = target !== 'web';
     const constantEnv = dev ? 'dev' : 'prod';

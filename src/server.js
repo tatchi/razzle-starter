@@ -88,7 +88,7 @@ server
                   .map(
                     chunk =>
                       process.env.NODE_ENV === 'production'
-                        ? `<link href="/${chunk}" rel="preload"></link>`
+                        ? `<link href="/${chunk}" rel="preload" as="script"></link>`
                         : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) +
                             1}/${chunk}"></script>`,
                   )
