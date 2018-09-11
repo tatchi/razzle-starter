@@ -77,7 +77,8 @@ server
               asset =>
                 process.env.NODE_ENV === 'production'
                   ? `<script src="${asset}"></script>`
-                  : `<script src="${asset}" crossorigin></script>`,
+                  : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) +
+                      1}/${asset}" crossorigin></script>`,
             )
             .join('\n')
         : ''

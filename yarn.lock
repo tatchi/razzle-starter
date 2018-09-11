@@ -3605,7 +3605,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -6318,10 +6318,6 @@ razzle-dev-utils@^2.4.0:
     sockjs-client "1.1.4"
     strip-ansi "3.0.1"
 
-razzle-plugin-scss@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/razzle-plugin-scss/-/razzle-plugin-scss-2.2.0.tgz#8f2120ed7a488efe43153bb5d0e6e0d1a4880f22"
-
 razzle@^2.2.0, razzle@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/razzle/-/razzle-2.4.0.tgz#cdf49583d6477bd244eaf9ff3ad286824e0e2865"
@@ -6858,6 +6854,13 @@ react-slick@~0.23.1:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
+
+react-universal-component@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-universal-component/-/react-universal-component-3.0.1.tgz#48ecc3391f4e735a5b3cf8a6fa860409e25086b7"
+  dependencies:
+    hoist-non-react-statics "^2.2.1"
+    prop-types "^15.5.10"
 
 "react@^15 || ^16", react@^16.0.0:
   version "16.5.0"
