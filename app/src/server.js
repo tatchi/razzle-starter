@@ -71,6 +71,18 @@ server
   <body>
     <div id="root">${markup}</div>
     ${
+      jsChunks.length > 0
+        ? jsChunks
+            .map(
+              chunk =>
+                process.env.NODE_ENV === 'production'
+                  ? `<script src="/${chunk}" rel="preload" as="script"></script>`
+                  : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${chunk}"></script>`,
+            )
+            .join('\n')
+        : ''
+    }
+    ${
       clientJs.length > 0
         ? clientJs
             .map(
@@ -83,19 +95,6 @@ server
             .join('\n')
         : ''
     }
-          ${
-            jsChunks.length > 0
-              ? jsChunks
-                  .map(
-                    chunk =>
-                      process.env.NODE_ENV === 'production'
-                        ? `<link href="/${chunk}" rel="preload" as="script"></link>`
-                        : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) +
-                            1}/${chunk}"></script>`,
-                  )
-                  .join('\n')
-              : ''
-          }
   </body>
 </html>`,
       );
