@@ -1,7 +1,7 @@
 import App from './App';
 import React from 'react';
 import { hydrate } from 'react-dom';
-import Loadable from '@7rulnik/react-loadable';
+import Loadable from 'react-loadable-local';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
 
 Loadable.preloadReady().then(() => {

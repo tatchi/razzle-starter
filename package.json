@@ -5,6 +5,6 @@
   "dependencies": {},
   "workspaces": {
 	"packages": ["app",
-	"packages/razzle-plugin-*"	]
+	"packages/*"	]
   }
 }
