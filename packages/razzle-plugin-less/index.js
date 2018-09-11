@@ -23,16 +23,6 @@ const defaultOptions = {
       }),
     ],
   },
-  sass: {
-    dev: {
-      sourceMap: true,
-      includePaths: [paths.appNodeModules],
-    },
-    prod: {
-      sourceMap: false,
-      includePaths: [paths.appNodeModules],
-    },
-  },
   less: {
     dev: {
       sourceMap: true,
@@ -100,24 +90,8 @@ module.exports = (defaultConfig, { target, dev }, webpack, userOptions = {}) => 
     }),
   };
 
-  const sassLoader = {
-    loader: require.resolve('sass-loader'),
-    options: options.sass[constantEnv],
-  };
-
   config.module.rules = [
     ...config.module.rules,
-    {
-      test: /\.(sa|sc)ss$/,
-      use: isServer
-        ? [
-            {
-              loader: require.resolve('css-loader/locals'),
-              options: options.css[constantEnv],
-            },
-          ]
-        : [dev ? styleLoader : MiniCssExtractPlugin.loader, cssLoader, resolveUrlLoader, postCssLoader, sassLoader],
-    },
     {
       test: /\.less$/,
       use: isServer
