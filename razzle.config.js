@@ -1,7 +1,4 @@
-const { ReactLoadablePlugin } = require('react-loadable/webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-const { StatsWriterPlugin } = require('webpack-stats-plugin');
 const path = require('path');
 const fs = require('fs');
 
@@ -14,16 +11,12 @@ module.exports = {
     if (target === 'web') {
       config.plugins = [
         ...config.plugins,
-        // new StatsPlugin('../stats.json', 'normal'),
-        new StatsWriterPlugin({
-          fields: null,
-          filename: './build/stats.json', // Default
-        }),
         {
           apply: compiler => {
+            const pathName = './build/stats.json';
             compiler.plugin('emit', (curCompiler, callback) => {
               const json = JSON.stringify(curCompiler.getStats().toJson(), null, 2);
-              const outputDirectory = path.dirname('./build/stats.json');
+              const outputDirectory = path.dirname(pathName);
               try {
                 fs.mkdirSync(outputDirectory);
               } catch (err) {
@@ -31,27 +24,22 @@ module.exports = {
                   throw err;
                 }
               }
-              fs.writeFileSync('./build/stats.json', json);
+              fs.writeFileSync(pathName, json);
               callback();
             });
           },
         },
       ];
-    }
 
-    return config;
+      if (!dev) {
+        config.plugins = config.plugins.filter(p => p.constructor.name !== 'AggressiveMergingPlugin');
+      }
+    }
 
     let rules = config.module.rules;
 
     const loaderName = 'mini-css-extract-plugin';
     const loaderRegex = new RegExp(`[/\\\\]${loaderName}[/\\\\]`);
-
-    // allLoaders = rules.filter(rule => rule.use).reduce((acc, rule) => [...acc, ...rule.use], []);
-    // miniCssLoaders = allLoaders.filter(loader => loaderRegex.test(loader));
-
-    // miniCssLoaders.forEach(element => {
-    //   element = 'll';
-    // });
 
     rules.forEach((rule, iRule) => {
       if (rule.use) {
@@ -63,25 +51,11 @@ module.exports = {
       }
     });
 
-    // console.log(config.module.rules.filter(rule => rule.use).reduce((acc, rule) => [...acc, ...rule.use], []));
-
     config.plugins.forEach((p, i) => {
-      if (p instanceof MiniCssExtractPlugin) {
+      if (p.constructor.name === 'MiniCssExtractPlugin') {
         config.plugins[i] = new ExtractCssChunks({ ...p.options });
       }
     });
-
-    if (target === 'web') {
-      config.plugins = [
-        ...config.plugins,
-        new StatsWriterPlugin({
-          fields: null,
-          filename: '../stats.json', // Default
-        }),
-      ];
-    }
-
-    console.log(config.plugins);
 
     return config;
   },

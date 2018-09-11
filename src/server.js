@@ -30,17 +30,9 @@ server
       chunkNames: flushChunkNames(),
     });
 
-    console.log(js.toString())
-    console.log(assets.client)
-
     if (context.url) {
       res.redirect(context.url);
     } else {
-      // const bundles = getBundles(stats, modules);
-      // // console.log(modules);
-      // const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
-      // const styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
-      // console.log(styles);
       res.status(200).send(
         `<!doctype html>
 <html lang="">
