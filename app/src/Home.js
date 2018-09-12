@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Loadable from 'react-loadable';
-import { Link, Route } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom';
 import './Home.css';
-import Logo from './Logo'
-import Intro from './Intro'
-import Welcome from './Welcome'
+import Logo from './Logo';
+import Intro from './Intro';
+import Welcome from './Welcome';
 
 const Product = Loadable({
   loader: () => import('./Product'),
@@ -14,8 +14,14 @@ const Product2 = Loadable({
   loader: () => import('./Product2'),
   loading: () => null,
 });
-
-
+const Product3 = Loadable({
+  loader: () => import('./Product3'),
+  loading: () => null,
+});
+const Product4 = Loadable({
+  loader: () => import('./Product4'),
+  loading: () => null,
+});
 class Home extends Component {
   render() {
     return (
@@ -33,6 +39,12 @@ class Home extends Component {
             <Link to="/Product2">Product2</Link>
           </li>
           <li>
+            <Link to="/Product3">Product3</Link>
+          </li>
+          <li>
+            <Link to="/product4">Product4</Link>
+          </li>
+          <li>
             <a href="https://github.com/jaredpalmer/razzle">Docs</a>
           </li>
           <li>
@@ -44,6 +56,8 @@ class Home extends Component {
         </ul>
         <Route exact path="/product" component={Product} />
         <Route exact path="/product2" component={Product2} />
+        <Route exact path="/product3" component={Product3} />
+        <Route exact path="/product4" component={Product4} />
       </div>
     );
   }

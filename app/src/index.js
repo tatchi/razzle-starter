@@ -11,12 +11,13 @@ Loadable.preloadAll().then(() => {
 });
 
 if (module.hot) {
-  console.log('✅  Server-side HMR Enabled!');
+  console.log('?  Server-side HMR Enabled!');
 
-  module.hot.accept('./server', () => {
-    console.log('🔁  HMR Reloading `./server`...');
+  module.hot.accept('./server', async () => {
+    console.log('??  HMR Reloading `./server`...');
     server.removeListener('request', currentApp);
     const newApp = require('./server').default;
+    await Loadable.preloadAll();
     server.on('request', newApp);
     currentApp = newApp;
   });
