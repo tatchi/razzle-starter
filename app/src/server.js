@@ -1,6 +1,6 @@
 import App from './App';
 import React from 'react';
-import Loadable from  'react-loadable-local';
+import { Capture } from 'react-loadable';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
@@ -20,17 +20,14 @@ server
     let modules = [];
 
     const markup = renderToString(
-      <Loadable.Capture report={moduleName => {
-        console.log({moduleName})
-        modules.push(moduleName)
-      }}>
+      <Capture report={moduleName => modules.push(moduleName)}>
         <StaticRouter context={context} location={req.url}>
           <App />
         </StaticRouter>
-      </Loadable.Capture>,
+      </Capture>,
     );
     console.log({ modules });
-    console.log({ stats });
+    // console.log({ stats });
 
     let bundles = getBundles(stats, modules);
     console.log({ bundles });
@@ -38,24 +35,19 @@ server
     const clientJs = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.js'));
     const clientCss = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.css'));
 
-    const getNameFromModule = module => module.split('/')[1];
+    console.log({ clientJs });
 
-    const moduleNames = modules.map(getNameFromModule);
+    // const getNameFromModule = module => module.split('/')[1];
 
-    const jsChunks = moduleNames.reduce(
-      (acc, moduleName) => [
-        ...acc,
-        ...webpackStats.namedChunkGroups[moduleName].assets.filter(asset => asset.endsWith('.js')),
-      ],
-      [],
-    );
-    const cssChunks = moduleNames.reduce(
-      (acc, moduleName) => [
-        ...acc,
-        ...webpackStats.namedChunkGroups[moduleName].assets.filter(asset => asset.endsWith('.css')),
-      ],
-      [],
-    );
+    // const moduleNames = modules.map(getNameFromModule);
+
+    const jsChunks = bundles.js || [];
+    const cssChunks = bundles.css || [];
+
+    // let cssChunks = bundles.filter(bundle => bundle.file.endsWith('.css'));
+    // let jsChunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
+
+    console.log({ jsChunks });
 
     if (context.url) {
       res.redirect(context.url);
@@ -73,7 +65,7 @@ server
       cssChunks.length > 0
         ? cssChunks
             .map(style => {
-              return `<link href="${style}" rel="stylesheet"/>`;
+              return `<link href="${style.file}" rel="stylesheet"/>`;
             })
             .join('\n')
         : ''
@@ -82,26 +74,28 @@ server
   <body>
     <div id="root">${markup}</div>
     ${
-      jsChunks.length > 0
-        ? jsChunks
-            .map(
-              chunk =>
-                process.env.NODE_ENV === 'production'
-                  ? `<script src="/${chunk}" rel="preload" as="script"></script>`
-                  : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${chunk}"></script>`,
-            )
-            .join('\n')
-        : ''
-    }
-    ${
       clientJs.length > 0
         ? clientJs
             .map(
               asset =>
                 process.env.NODE_ENV === 'production'
-                  ? `<script src="${asset}"></script>`
+                  ? `<script src="/${asset}"></script>`
                   : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) +
                       1}/${asset}" crossorigin></script>`,
+            )
+            .join('\n')
+        : ''
+    }
+    ${
+      jsChunks.length > 0
+        ? jsChunks
+            .map(
+              chunk =>
+                process.env.NODE_ENV === 'production'
+                  ? `<script src="/${chunk.file}"></script>`
+                  : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${
+                      chunk.file
+                    }"></script>`,
             )
             .join('\n')
         : ''

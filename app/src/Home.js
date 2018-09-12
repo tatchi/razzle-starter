@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Loadable from 'react-loadable-local';
+import Loadable from 'react-loadable';
 import { Link, Route } from 'react-router-dom';
 import './Home.css';
 import Logo from './Logo';
@@ -8,7 +8,7 @@ import Welcome from './Welcome';
 
 const Product = Loadable({
   loader: () => import('./Product'),
-  loading: () => null,
+  loading: () => <div>loading...</div>,
 });
 const Product2 = Loadable({
   loader: () => import('./Product2'),
