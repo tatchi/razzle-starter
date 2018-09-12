@@ -1,4 +1,5 @@
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+const { ReactLoadablePlugin } = require('react-loadable-local/webpack');
 const path = require('path');
 const fs = require('fs');
 
@@ -12,6 +13,9 @@ module.exports = {
     if (target === 'web') {
       config.plugins = [
         ...config.plugins,
+        new ReactLoadablePlugin({
+          filename: '../react-loadable.json',
+        }),
         {
           apply: compiler => {
             const pathName = './build/stats.json';

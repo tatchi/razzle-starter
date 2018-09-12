@@ -1,10 +1,12 @@
 import App from './App';
 import React from 'react';
-import { Capture } from 'react-loadable';
+import Loadable from  'react-loadable-local';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
 import webpackStats from '../build/stats.json';
+import { getBundles } from 'react-loadable-local/webpack';
+import stats from '../build/react-loadable.json';
 import { join } from 'upath';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
@@ -18,12 +20,21 @@ server
     let modules = [];
 
     const markup = renderToString(
-      <Capture report={moduleName => modules.push(moduleName)}>
+      <Loadable.Capture report={moduleName => {
+        console.log({moduleName})
+        modules.push(moduleName)
+      }}>
         <StaticRouter context={context} location={req.url}>
           <App />
         </StaticRouter>
-      </Capture>,
+      </Loadable.Capture>,
     );
+    console.log({ modules });
+    console.log({ stats });
+
+    let bundles = getBundles(stats, modules);
+    console.log({ bundles });
+
     const clientJs = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.js'));
     const clientCss = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.css'));
 
