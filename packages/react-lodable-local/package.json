@@ -1,5 +1,5 @@
 {
-  "name": "react-loadable-them",
+  "name": "react-lodable-local",
   "version": "5.5.0",
   "description": "A higher order component for loading components with promises",
   "main": "lib/index.js",
