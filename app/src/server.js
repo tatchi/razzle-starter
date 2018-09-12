@@ -1,6 +1,6 @@
 import App from './App';
 import React from 'react';
-import { Capture } from 'react-loadable-local';
+import { Capture } from '@7rulnik/react-loadable';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
@@ -95,6 +95,7 @@ server
             .join('\n')
         : ''
     }
+    <script>window.main();</script>
   </body>
 </html>`,
       );

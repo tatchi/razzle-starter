@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Loadable from 'react-loadable-local';
+import Loadable from '@7rulnik/react-loadable';
 import { Link, Route } from 'react-router-dom';
 import './Home.css';
 import Logo from './Logo';
@@ -8,19 +8,19 @@ import Welcome from './Welcome';
 
 const Product = Loadable({
   loader: () => import('./Product'),
-  loading: () => <div>loading...</div>,
+  loading: () => null,
 });
 const Product2 = Loadable({
   loader: () => import('./Product2'),
-  loading: () => <div>loading...</div>,
+  loading: () => null,
 });
 const Product3 = Loadable({
   loader: () => import('./Product3'),
-  loading: () => <div>loading...</div>,
+  loading: () => null,
 });
 const Product4 = Loadable({
   loader: () => import('./Product4'),
-  loading: () => <div>loading...</div>,
+  loading: () => null,
 });
 class Home extends Component {
   render() {
