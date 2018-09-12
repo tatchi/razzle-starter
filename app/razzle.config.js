@@ -38,6 +38,19 @@ module.exports = {
 
       if (!dev) {
         config.plugins = config.plugins.filter(p => p.constructor.name !== 'AggressiveMergingPlugin');
+
+        config.optimization = {
+          ...config.optimization,
+          splitChunks: {
+            cacheGroups: {
+              vendors: {
+                test: /[\\/]node_modules[\\/]/,
+                chunks: 'initial',
+                name: 'vendor',
+              },
+            },
+          },
+        };
       }
     }
 
