@@ -1,6 +1,6 @@
 import App from './App';
 import React from 'react';
-import { Capture } from '@7rulnik/react-loadable';
+import { Capture } from 'react-loadable';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
