@@ -7,7 +7,7 @@ import Intro from './Intro';
 import Welcome from './Welcome';
 
 const Product = Loadable({
-  loader: () => import(/* webpackPrefetch: true */ './Product'),
+  loader: () => import(/* webpackPrefetch: true, webpackChunkName: 'Product' */ './Product'),
   loading: () => <div>loading...</div>,
 });
 const Product2 = Loadable({
