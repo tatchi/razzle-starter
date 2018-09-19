@@ -1,5 +1,3 @@
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-// const { ReactLoadablePlugin } = require('react-loadable-local/webpack');
 const ReactLoadableSSRAddon = require('react-loadable-ssr-addon').default;
 const path = require('path');
 const fs = require('fs');

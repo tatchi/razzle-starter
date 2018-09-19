@@ -22,9 +22,6 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-import": "^1.9.1",
-    "babel-plugin-universal-import": "^3.0.2",
-    "cross-env": "^5.2.0",
-    "extract-css-chunks-webpack-plugin": "^3.1.1",
-    "razzle-plugin-less": "^2.2.0"
+    "cross-env": "^5.2.0"
   }
 }
