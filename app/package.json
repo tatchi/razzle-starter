@@ -13,15 +13,15 @@
     "antd": "^3.9.2",
     "express": "^4.16.2",
     "razzle": "^2.4.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "react-loadable": "^5.5.0",
     "react-loadable-ssr-addon": "^0.1.0",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-plugin-import": "^1.8.0",
+    "babel-plugin-import": "^1.9.1",
     "babel-plugin-universal-import": "^3.0.2",
     "cross-env": "^5.2.0",
     "extract-css-chunks-webpack-plugin": "^3.1.1",
