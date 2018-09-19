@@ -1,4 +1,4 @@
-const ReactLoadableSSRAddon = require('react-loadable-ssr-addon').default;
+const ReactLoadableSSRAddon = require('react-loadable-ssr-addon');
 const path = require('path');
 const fs = require('fs');
 
