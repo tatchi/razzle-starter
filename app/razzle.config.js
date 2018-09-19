@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = {
-  plugins: [{ func: require('razzle-plugin-less') }],
+  // plugins: [{ func: require('razzle-plugin-less') }],
   modify: (defaultConfig, { target, dev }, webpack, userOptions = {}) => {
     const isServer = target !== 'web';
     const constantEnv = dev ? 'dev' : 'prod';
@@ -57,24 +57,24 @@ module.exports = {
 
     let rules = config.module.rules;
 
-    const loaderName = 'mini-css-extract-plugin';
-    const loaderRegex = new RegExp(`[/\\\\]${loaderName}[/\\\\]`);
+    // const loaderName = 'mini-css-extract-plugin';
+    // const loaderRegex = new RegExp(`[/\\\\]${loaderName}[/\\\\]`);
 
-    rules.forEach((rule, iRule) => {
-      if (rule.use) {
-        rule.use.forEach((loader, iLoader) => {
-          if (loader && typeof loader === 'string' && loaderRegex.test(loader)) {
-            rules[iRule].use[iLoader] = ExtractCssChunks.loader;
-          }
-        });
-      }
-    });
+    // rules.forEach((rule, iRule) => {
+    //   if (rule.use) {
+    //     rule.use.forEach((loader, iLoader) => {
+    //       if (loader && typeof loader === 'string' && loaderRegex.test(loader)) {
+    //         rules[iRule].use[iLoader] = ExtractCssChunks.loader;
+    //       }
+    //     });
+    //   }
+    // });
 
-    config.plugins.forEach((p, i) => {
-      if (p.constructor.name === 'MiniCssExtractPlugin') {
-        config.plugins[i] = new ExtractCssChunks({ ...p.options });
-      }
-    });
+    // config.plugins.forEach((p, i) => {
+    //   if (p.constructor.name === 'MiniCssExtractPlugin') {
+    //     config.plugins[i] = new ExtractCssChunks({ ...p.options });
+    //   }
+    // });
 
     return config;
   },
