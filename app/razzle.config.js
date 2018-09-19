@@ -1,5 +1,6 @@
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-const { ReactLoadablePlugin } = require('react-loadable-local/webpack');
+// const { ReactLoadablePlugin } = require('react-loadable-local/webpack');
+const ReactLoadableSSRAddon = require('react-loadable-ssr-addon').default;
 const path = require('path');
 const fs = require('fs');
 
@@ -13,7 +14,7 @@ module.exports = {
     if (target === 'web') {
       config.plugins = [
         ...config.plugins,
-        new ReactLoadablePlugin({
+        new ReactLoadableSSRAddon({
           filename: '../react-loadable.json',
         }),
         {

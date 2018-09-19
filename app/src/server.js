@@ -5,7 +5,7 @@ import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
 import webpackStats from '../build/stats.json';
-import { getBundles } from 'react-loadable-local/webpack';
+import { getBundles } from 'react-loadable-ssr-addon';
 import stats from '../build/react-loadable.json';
 import { join } from 'upath';
 
@@ -26,16 +26,18 @@ server
         </StaticRouter>
       </Capture>,
     );
-    console.log({ modules });
+    // console.log({ modules });
     // console.log({ stats });
 
-    let bundles = getBundles(stats, modules);
+    const modulesToBeLoaded = [...stats.entrypoints, ...Array.from(modules)];
+
+    let bundles = getBundles(stats, modulesToBeLoaded);
     console.log({ bundles });
 
-    const clientJs = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.js'));
-    const clientCss = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.css'));
+    // const clientJs = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.js'));
+    // const clientCss = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.css'));
 
-    console.log({ clientJs });
+    // console.log({ clientJs });
 
     // const getNameFromModule = module => module.split('/')[1];
 
@@ -60,7 +62,6 @@ server
     <meta charSet='utf-8' />
     <title>Welcome to Razzle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    ${clientCss.length > 0 ? clientCss.map(asset => `<link rel="stylesheet" href="${asset}">`).join('\n') : ''}
     ${
       cssChunks.length > 0
         ? cssChunks
@@ -74,19 +75,6 @@ server
   <body>
     <div id="root">${markup}</div>
     ${
-      clientJs.length > 0
-        ? clientJs
-            .map(
-              asset =>
-                process.env.NODE_ENV === 'production'
-                  ? `<script src="/${asset}"></script>`
-                  : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) +
-                      1}/${asset}" crossorigin></script>`,
-            )
-            .join('\n')
-        : ''
-    }
-    ${
       jsChunks.length > 0
         ? jsChunks
             .map(
@@ -95,7 +83,7 @@ server
                   ? `<script src="/${chunk.file}"></script>`
                   : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${
                       chunk.file
-                    }"></script>`,
+                    } crossorigin"></script>`,
             )
             .join('\n')
         : ''
