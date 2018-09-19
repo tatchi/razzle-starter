@@ -83,7 +83,7 @@ server
                   ? `<script src="/${chunk.file}"></script>`
                   : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${
                       chunk.file
-                    } crossorigin"></script>`,
+                    }" crossorigin></script>`,
             )
             .join('\n')
         : ''
