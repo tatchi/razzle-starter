@@ -7,19 +7,19 @@ import Intro from './Intro';
 import Welcome from './Welcome';
 
 const Product = Loadable({
-  loader: () => import('./Product'),
+  loader: () => import(/* webpackPrefetch: true */ './Product'),
   loading: () => <div>loading...</div>,
 });
 const Product2 = Loadable({
-  loader: () => import('./Product2'),
+  loader: () => import(/* webpackPrefetch: true */'./Product2'),
   loading: () => null,
 });
 const Product3 = Loadable({
-  loader: () => import('./Product3'),
+  loader: () => import(/* webpackPrefetch: true */'./Product3'),
   loading: () => null,
 });
 const Product4 = Loadable({
-  loader: () => import('./Product4'),
+  loader: () => import(/* webpackPrefetch: true */'./Product4'),
   loading: () => null,
 });
 class Home extends Component {
