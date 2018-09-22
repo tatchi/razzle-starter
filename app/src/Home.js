@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
 import Loadable from 'react-loadable';
-import { Link, Route } from 'react-router-dom';
 import './Home.css';
 import Logo from './Logo';
 import Intro from './Intro';
 import Welcome from './Welcome';
+import { Router, Link } from '@reach/router';
 
 const Product = Loadable({
   loader: () => import(/* webpackPrefetch: true, webpackChunkName: 'Product' */ './Product'),
   loading: () => <div>loading...</div>,
 });
 const Product2 = Loadable({
-  loader: () => import(/* webpackPrefetch: true */'./Product2'),
+  loader: () => import(/* webpackPrefetch: true */ './Product2'),
   loading: () => null,
 });
 const Product3 = Loadable({
-  loader: () => import(/* webpackPrefetch: true */'./Product3'),
+  loader: () => import(/* webpackPrefetch: true */ './Product3'),
   loading: () => null,
 });
 const Product4 = Loadable({
-  loader: () => import(/* webpackPrefetch: true */'./Product4'),
+  loader: () => import(/* webpackPrefetch: true */ './Product4'),
   loading: () => null,
 });
+
 class Home extends Component {
   render() {
     return (
@@ -33,16 +34,16 @@ class Home extends Component {
         <Intro />
         <ul className="Home-resources">
           <li>
-            <Link to="/Product">Product</Link>
+            <Link to="product">Product</Link>
           </li>
           <li>
-            <Link to="/Product2">Product2</Link>
+            <Link to="product2">Product2</Link>
           </li>
           <li>
-            <Link to="/Product3">Product3</Link>
+            <Link to="product3">Product3</Link>
           </li>
           <li>
-            <Link to="/product4">Product4</Link>
+            <Link to="product4">Product4</Link>
           </li>
           <li>
             <a href="https://github.com/jaredpalmer/razzle">Docs</a>
@@ -54,10 +55,12 @@ class Home extends Component {
             <a href="https://palmer.chat">Community Slack</a>
           </li>
         </ul>
-        <Route exact path="/product" component={Product} />
-        <Route exact path="/product2" component={Product2} />
-        <Route exact path="/product3" component={Product3} />
-        <Route exact path="/product4" component={Product4} />
+        <Router>
+          <Product path="product" />
+          <Product2 path="product2" />
+          <Product3 path="product3" />
+          <Product4 path="product4" />
+        </Router>
       </div>
     );
   }

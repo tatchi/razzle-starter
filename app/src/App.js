@@ -1,13 +1,14 @@
 import React from 'react';
-import Route from 'react-router-dom/Route';
-import Switch from 'react-router-dom/Switch';
 import Home from './Home';
+import { Router } from '@reach/router';
 import './App.css';
 
+const Lol = () => <div>salut</div>;
+
 const App = () => (
-  <Switch>
-    <Route path="/" component={Home} />
-  </Switch>
+  <Router>
+    <Home path="/*" />
+  </Router>
 );
 
 export default App;

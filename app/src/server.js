@@ -1,11 +1,11 @@
 import App from './App';
 import React from 'react';
 import { Capture } from 'react-loadable';
-import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
+import { ServerLocation } from '@reach/router';
 // import webpackStats from '../build/stats.json';
-import { getBundles } from 'react-loadable-ssr-addon'
+import { getBundles } from 'react-loadable-ssr-addon';
 import stats from '../build/react-loadable.json';
 import { join } from 'upath';
 
@@ -21,9 +21,9 @@ server
 
     const markup = renderToString(
       <Capture report={moduleName => modules.push(moduleName)}>
-        <StaticRouter context={context} location={req.url}>
+        <ServerLocation url={req.url}>
           <App />
-        </StaticRouter>
+        </ServerLocation>
       </Capture>,
     );
     // console.log({ modules });
