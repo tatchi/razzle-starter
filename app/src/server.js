@@ -1,20 +1,26 @@
 import App from './App';
 import React from 'react';
 import { Capture } from 'react-loadable';
-import express from 'express';
+import polka from 'polka';
+import sirv from 'sirv';
 import { renderToString } from 'react-dom/server';
 import { ServerLocation, isRedirect } from '@reach/router';
-// import webpackStats from '../build/stats.json';
 import { getBundles } from 'react-loadable-ssr-addon';
 import stats from '../build/react-loadable.json';
-import { join } from 'upath';
+const compress = require('compression')();
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
-const server = express();
-server
-  .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+const publicAssets = sirv(process.env.RAZZLE_PUBLIC_DIR, {
+  maxAge: 31536000, // 1Y
+  immutable: true, // should only be set in prod I think
+});
+
+export default polka()
+  // .disable('x-powered-by')
+  // .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(publicAssets)
+  // .use(serve(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
     let modules = [];
     let markup;
@@ -31,6 +37,7 @@ server
       if (isRedirect(error)) {
         res.redirect(error.uri);
       }
+      console.log({ error });
     }
 
     // console.log({ modules });
@@ -58,7 +65,7 @@ server
 
     console.log({ jsChunks });
 
-    res.status(200).send(
+    res.end(
       `<!doctype html>
 <html lang="">
   <head>
@@ -96,6 +103,4 @@ server
   </body>
 </html>`,
     );
-  });
-
-export default server;
+  }).handler;
