@@ -3,7 +3,7 @@ import React from 'react';
 import { Capture } from 'react-loadable';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
-import { ServerLocation } from '@reach/router';
+import { ServerLocation, isRedirect } from '@reach/router';
 // import webpackStats from '../build/stats.json';
 import { getBundles } from 'react-loadable-ssr-addon';
 import stats from '../build/react-loadable.json';
@@ -16,16 +16,23 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
-    const context = {};
     let modules = [];
+    let markup;
 
-    const markup = renderToString(
-      <Capture report={moduleName => modules.push(moduleName)}>
-        <ServerLocation url={req.url}>
-          <App />
-        </ServerLocation>
-      </Capture>,
-    );
+    try {
+      markup = renderToString(
+        <Capture report={moduleName => modules.push(moduleName)}>
+          <ServerLocation url={req.url}>
+            <App />
+          </ServerLocation>
+        </Capture>,
+      );
+    } catch (error) {
+      if (isRedirect(error)) {
+        res.redirect(error.uri);
+      }
+    }
+
     // console.log({ modules });
     // console.log({ stats });
 
@@ -51,11 +58,8 @@ server
 
     console.log({ jsChunks });
 
-    if (context.url) {
-      res.redirect(context.url);
-    } else {
-      res.status(200).send(
-        `<!doctype html>
+    res.status(200).send(
+      `<!doctype html>
 <html lang="">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -91,8 +95,7 @@ server
     <script>window.main();</script>
   </body>
 </html>`,
-      );
-    }
+    );
   });
 
 export default server;
