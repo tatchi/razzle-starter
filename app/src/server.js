@@ -4,8 +4,8 @@ import { Capture } from 'react-loadable';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
-import webpackStats from '../build/stats.json';
-import { getBundles } from 'react-loadable-ssr-addon';
+// import webpackStats from '../build/stats.json';
+import { getBundles } from 'react-loadable-ssr-addon'
 import stats from '../build/react-loadable.json';
 import { join } from 'upath';
 

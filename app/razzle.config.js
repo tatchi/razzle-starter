@@ -15,24 +15,24 @@ module.exports = {
         new ReactLoadableSSRAddon({
           filename: '../react-loadable.json',
         }),
-        {
-          apply: compiler => {
-            const pathName = './build/stats.json';
-            compiler.plugin('emit', (curCompiler, callback) => {
-              const json = JSON.stringify(curCompiler.getStats().toJson(), null, 2);
-              const outputDirectory = path.dirname(pathName);
-              try {
-                fs.mkdirSync(outputDirectory);
-              } catch (err) {
-                if (err.code !== 'EEXIST') {
-                  throw err;
-                }
-              }
-              fs.writeFileSync(pathName, json);
-              callback();
-            });
-          },
-        },
+        // {
+        //   apply: compiler => {
+        //     const pathName = './build/stats.json';
+        //     compiler.plugin('emit', (curCompiler, callback) => {
+        //       const json = JSON.stringify(curCompiler.getStats().toJson(), null, 2);
+        //       const outputDirectory = path.dirname(pathName);
+        //       try {
+        //         fs.mkdirSync(outputDirectory);
+        //       } catch (err) {
+        //         if (err.code !== 'EEXIST') {
+        //           throw err;
+        //         }
+        //       }
+        //       fs.writeFileSync(pathName, json);
+        //       callback();
+        //     });
+        //   },
+        // },
       ];
 
       if (!dev) {
@@ -44,9 +44,13 @@ module.exports = {
             cacheGroups: {
               vendors: {
                 test: /[\\/]node_modules[\\/]/,
-                chunks: 'initial',
-                name: 'vendor',
+                chunks: 'all',
               },
+              // commons: {
+              //   name: 'commons',
+              //   chunks: 'initial',
+              //   minChunks: 2,
+              // },
             },
           },
         };
