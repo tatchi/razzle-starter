@@ -3,6 +3,7 @@ import React from 'react';
 import { Capture } from 'react-loadable';
 import polka from 'polka';
 import sirv from 'sirv';
+import { renderStylesToString } from 'emotion-server'
 import { renderToString } from 'react-dom/server';
 import { ServerLocation, isRedirect } from '@reach/router';
 import { getBundles } from 'react-loadable-ssr-addon';
@@ -26,12 +27,14 @@ export default polka()
     let markup;
 
     try {
-      markup = renderToString(
-        <Capture report={moduleName => modules.push(moduleName)}>
-          <ServerLocation url={req.url}>
-            <App />
-          </ServerLocation>
-        </Capture>,
+      markup = renderStylesToString(
+        renderToString(
+          <Capture report={moduleName => modules.push(moduleName)}>
+            <ServerLocation url={req.url}>
+              <App />
+            </ServerLocation>
+          </Capture>,
+        ),
       );
     } catch (error) {
       if (isRedirect(error)) {
@@ -40,30 +43,12 @@ export default polka()
       console.log({ error });
     }
 
-    // console.log({ modules });
-    // console.log({ stats });
-
     const modulesToBeLoaded = [...stats.entrypoints, ...Array.from(modules)];
 
     let bundles = getBundles(stats, modulesToBeLoaded);
-    console.log({ bundles });
-
-    // const clientJs = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.js'));
-    // const clientCss = webpackStats.namedChunkGroups.client.assets.filter(asset => asset.endsWith('.css'));
-
-    // console.log({ clientJs });
-
-    // const getNameFromModule = module => module.split('/')[1];
-
-    // const moduleNames = modules.map(getNameFromModule);
 
     const jsChunks = bundles.js || [];
     const cssChunks = bundles.css || [];
-
-    // let cssChunks = bundles.filter(bundle => bundle.file.endsWith('.css'));
-    // let jsChunks = bundles.filter(bundle => bundle.file.endsWith('.js'));
-
-    console.log({ jsChunks });
 
     res.end(
       `<!doctype html>
