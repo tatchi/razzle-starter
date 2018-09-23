@@ -1,6 +1,7 @@
 const ReactLoadableSSRAddon = require('react-loadable-ssr-addon');
 const path = require('path');
 const fs = require('fs');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   // plugins: [{ func: require('razzle-plugin-less') }],
@@ -40,6 +41,13 @@ module.exports = {
 
         config.optimization = {
           ...config.optimization,
+          minimizer: [
+            new TerserPlugin({
+              parallel: true,
+              sourceMap: false,
+              cache: true,
+            }),
+          ],
           splitChunks: {
             cacheGroups: {
               vendors: {
