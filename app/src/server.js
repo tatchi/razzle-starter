@@ -19,7 +19,7 @@ const publicAssets = sirv(process.env.RAZZLE_PUBLIC_DIR, {
 export default polka()
   // .disable('x-powered-by')
   // .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .use(publicAssets)
+  .use(compress, publicAssets)
   // .use(serve(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
     let modules = [];
